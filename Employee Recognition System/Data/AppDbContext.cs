@@ -16,15 +16,51 @@ namespace Employee_Recognition_System.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // 🔥 Disable cascade delete globally
-            foreach (var relationship in modelBuilder.Model
-                .GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.NoAction;
-            }
+            // ✅ Employee unique email
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.Email)
+                .IsUnique();
+
+            // ✅ Appreciation Relationships
+            modelBuilder.Entity<Appreciation>()
+                .HasOne(a => a.Sender)
+                .WithMany()
+                .HasForeignKey(a => a.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appreciation>()
+                .HasOne(a => a.Receiver)
+                .WithMany()
+                .HasForeignKey(a => a.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ✅ Nomination Relationships
+            modelBuilder.Entity<Nomination>()
+                .HasOne(n => n.Employee)
+                .WithMany()
+                .HasForeignKey(n => n.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Nomination>()
+                .HasOne(n => n.NominatedBy)
+                .WithMany()
+                .HasForeignKey(n => n.NominatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Nomination>()
+                .HasOne(n => n.AwardCategory)
+                .WithMany()
+                .HasForeignKey(n => n.AwardCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ✅ Default values
+            modelBuilder.Entity<Appreciation>()
+                .Property(a => a.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Nomination>()
+                .Property(n => n.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
         }
-
-
     }
 }

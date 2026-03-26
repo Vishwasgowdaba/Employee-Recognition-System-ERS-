@@ -68,6 +68,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Employee_Recognition_System.Controllers.DashboardController",
+    "Method": "GetLeaderboard",
+    "RelativePath": "api/Dashboard/leaderboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Employee_Recognition_System.Controllers.DashboardController",
+    "Method": "GetRecentActivity",
+    "RelativePath": "api/Dashboard/recent-activity",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Employee_Recognition_System.Controllers.EmployeeController",
     "Method": "GetAll",
     "RelativePath": "api/Employee",

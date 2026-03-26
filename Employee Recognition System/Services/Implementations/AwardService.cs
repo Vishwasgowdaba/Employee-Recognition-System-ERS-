@@ -15,10 +15,11 @@ namespace Employee_Recognition_System.Services.Implementations
             _context = context;
         }
 
-        // ✅ Get all award categories
         public async Task<List<AwardCategoryResponseDTO>> GetAll()
         {
             return await _context.AwardCategories
+                .AsNoTracking()
+                .OrderBy(a => a.Name)
                 .Select(a => new AwardCategoryResponseDTO
                 {
                     Id = a.Id,
@@ -28,13 +29,14 @@ namespace Employee_Recognition_System.Services.Implementations
                 .ToListAsync();
         }
 
-        // ✅ Get award by ID
         public async Task<AwardCategoryResponseDTO> GetById(int id)
         {
-            var award = await _context.AwardCategories.FindAsync(id);
+            var award = await _context.AwardCategories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (award == null)
-                return null;
+                throw new KeyNotFoundException();
 
             return new AwardCategoryResponseDTO
             {
@@ -44,27 +46,16 @@ namespace Employee_Recognition_System.Services.Implementations
             };
         }
 
-        // ✅ Create new award category
         public async Task<AwardCategoryResponseDTO> Create(CreateAwardCategoryDTO dto)
         {
-            if (dto == null)
-                throw new ArgumentNullException(nameof(dto));
-
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new Exception("Award name is required");
-
-            if (dto.Points <= 0)
-                throw new Exception("Points must be greater than 0");
-
-            // ❗ Check duplicate
             var exists = await _context.AwardCategories
-                .AnyAsync(a => a.Name == dto.Name);
+                .AnyAsync(a => a.Name.ToLower() == dto.Name.ToLower());
 
             if (exists)
-                throw new Exception("Award category already exists");
+                throw new InvalidOperationException("Award category already exists");
 
             var award = new AwardCategory
-            {   Id=dto.id,
+            {
                 Name = dto.Name,
                 Points = dto.Points
             };

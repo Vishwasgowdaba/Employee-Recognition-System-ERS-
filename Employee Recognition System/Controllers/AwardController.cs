@@ -15,54 +15,27 @@ namespace Employee_Recognition_System.Controllers
             _service = service;
         }
 
-        /// <summary>
-        /// Get all award categories
-        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                var data = await _service.GetAll();
+            var data = await _service.GetAll();
 
-                return Ok(new
-                {
-                    success = true,
-                    message = "Awards fetched successfully",
-                    data = data
-                });
-            }
-            catch (Exception ex)
+            return Ok(new
             {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = ex.Message
-                });
-            }
+                success = true,
+                data
+            });
         }
 
-        /// <summary>
-        /// Get award by ID
-        /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if (id <= 0)
+                return BadRequest("Invalid award ID");
+
             try
             {
-                if (id <= 0)
-                    return BadRequest("Invalid award ID");
-
                 var award = await _service.GetById(id);
-
-                if (award == null)
-                {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message = "Award not found"
-                    });
-                }
 
                 return Ok(new
                 {
@@ -70,37 +43,33 @@ namespace Employee_Recognition_System.Controllers
                     data = award
                 });
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
             {
-                return StatusCode(500, new
+                return NotFound(new
                 {
                     success = false,
-                    message = ex.Message
+                    message = "Award not found"
                 });
             }
         }
 
-        /// <summary>
-        /// Create new award category
-        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAwardCategoryDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                if (dto == null)
-                    return BadRequest("Invalid request data");
-
                 var result = await _service.Create(dto);
 
-                return Ok(new
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, new
                 {
                     success = true,
-                    message = "Award created successfully",
                     data = result
                 });
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
                 return BadRequest(new
                 {

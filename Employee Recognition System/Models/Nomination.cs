@@ -1,30 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Employee_Recognition_System.Models;
 
-namespace Employee_Recognition_System.Models
+public class Nomination
 {
-    public class Nomination
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        // 🔗 Employee being nominated
-        [Required]
-        public int EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+    public int EmployeeId { get; set; }
+    public Employee Employee { get; set; }
 
-        // 🏆 Award category
-        [Required]
-        public int AwardCategoryId { get; set; }
-        public AwardCategory AwardCategory { get; set; }
+    public int NominatedById { get; set; }
+    public Employee NominatedBy { get; set; }
 
-        // 👤 Who nominated
-        [Required]
-        public int NominatedById { get; set; }
-        public Employee NominatedBy { get; set; }
+    public int AwardCategoryId { get; set; }
+    public AwardCategory AwardCategory { get; set; }
 
-        // 📌 Status
-        public NominationStatus Status { get; set; } = NominationStatus.Pending;
+    public NominationStatus Status { get; set; } = NominationStatus.Pending;
 
-        // 🕒 Timestamp
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

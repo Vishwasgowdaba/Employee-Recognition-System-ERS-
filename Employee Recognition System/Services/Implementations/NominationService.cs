@@ -17,29 +17,28 @@ namespace Employee_Recognition_System.Services.Implementations
             _emailService = emailService;
         }
 
-        // ✅ Create Nomination
+        // ✅ CREATE
         public async Task<NominationResponseDTO> Create(CreateNominationDTO dto)
         {
             if (dto.EmployeeId == dto.NominatedById)
-                throw new Exception("You cannot nominate yourself");
+                throw new InvalidOperationException("You cannot nominate yourself");
 
             var employee = await _context.Employees.FindAsync(dto.EmployeeId)
                 ?? throw new KeyNotFoundException("Employee not found");
 
             var award = await _context.AwardCategories.FindAsync(dto.AwardCategoryId)
-                ?? throw new KeyNotFoundException("Award category not found");
+                ?? throw new KeyNotFoundException("Award not found");
 
             var nominator = await _context.Employees.FindAsync(dto.NominatedById)
                 ?? throw new KeyNotFoundException("Nominator not found");
 
-            // Prevent duplicate nominations
             var exists = await _context.Nominations.AnyAsync(n =>
                 n.EmployeeId == dto.EmployeeId &&
                 n.AwardCategoryId == dto.AwardCategoryId &&
                 n.Status == NominationStatus.Pending);
 
             if (exists)
-                throw new Exception("Already nominated for this award");
+                throw new InvalidOperationException("Already nominated");
 
             var nomination = new Nomination
             {
@@ -51,20 +50,35 @@ namespace Employee_Recognition_System.Services.Implementations
             await _context.Nominations.AddAsync(nomination);
             await _context.SaveChangesAsync();
 
-            // 📧 Send Email
-            await _emailService.SendEmailAsync(
-                employee.Email,
-                "You've been nominated!",
-                $"You have been nominated for {award.Name}"
-            );
+            try
+            {
+                await _emailService.SendEmailAsync(
+                    employee.Email,
+                    "You've been nominated!",
+                    $"You have been nominated for {award.Name}"
+                );
+            }
+            catch { }
 
-            return MapToDTO(nomination, employee, award, nominator);
+            return new NominationResponseDTO
+            {
+                Id = nomination.Id,
+                EmployeeId = employee.Id,
+                EmployeeName = employee.Name,
+                AwardCategoryId = award.Id,
+                AwardName = award.Name,
+                NominatedById = nominator.Id,
+                NominatedByName = nominator.Name,
+                Status = nomination.Status.ToString(),
+                CreatedAt = nomination.CreatedAt
+            };
         }
 
-        // ✅ Get All
+        // ✅ GET ALL
         public async Task<List<NominationResponseDTO>> GetAll()
         {
             return await _context.Nominations
+                .AsNoTracking()
                 .Include(n => n.Employee)
                 .Include(n => n.AwardCategory)
                 .Include(n => n.NominatedBy)
@@ -83,21 +97,24 @@ namespace Employee_Recognition_System.Services.Implementations
                 .ToListAsync();
         }
 
-        // ✅ Update Status
+        // ✅ UPDATE STATUS
         public async Task<NominationResponseDTO> UpdateStatus(int id, UpdateNominationStatusDTO dto)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             var nomination = await _context.Nominations
-                .Include(n => n.Employee)
                 .Include(n => n.AwardCategory)
+                .Include(n => n.Employee)
+                .Include(n => n.NominatedBy)
                 .FirstOrDefaultAsync(n => n.Id == id)
-                ?? throw new Exception("Nomination not found");
+                ?? throw new KeyNotFoundException("Nomination not found");
+
+            if (!Enum.TryParse<NominationStatus>(dto.Status, true, out var newStatus))
+                throw new InvalidOperationException("Invalid status");
 
             if (nomination.Status != NominationStatus.Pending)
-                throw new Exception("Already processed");
+                throw new InvalidOperationException("Already processed");
 
-            var newStatus = Enum.Parse<NominationStatus>(dto.Status, true);
             nomination.Status = newStatus;
 
             if (newStatus == NominationStatus.Approved)
@@ -106,14 +123,18 @@ namespace Employee_Recognition_System.Services.Implementations
             }
 
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
 
-            // 📧 Email
-            await _emailService.SendEmailAsync(
-                nomination.Employee.Email,
-                "Nomination Update",
-                $"Your nomination has been {newStatus}"
-            );
+            try
+            {
+                await _emailService.SendEmailAsync(
+                    nomination.Employee.Email,
+                    "Nomination Update",
+                    $"Your nomination has been {newStatus}"
+                );
+            }
+            catch { }
+
+            await transaction.CommitAsync();
 
             return new NominationResponseDTO
             {
@@ -123,27 +144,7 @@ namespace Employee_Recognition_System.Services.Implementations
                 AwardCategoryId = nomination.AwardCategoryId,
                 AwardName = nomination.AwardCategory.Name,
                 NominatedById = nomination.NominatedById,
-                Status = nomination.Status.ToString(),
-                CreatedAt = nomination.CreatedAt
-            };
-        }
-
-        // 🔁 Mapper
-        private NominationResponseDTO MapToDTO(
-            Nomination nomination,
-            Employee employee,
-            AwardCategory award,
-            Employee nominator)
-        {
-            return new NominationResponseDTO
-            {
-                Id = nomination.Id,
-                EmployeeId = employee.Id,
-                EmployeeName = employee.Name,
-                AwardCategoryId = award.Id,
-                AwardName = award.Name,
-                NominatedById = nominator.Id,
-                NominatedByName = nominator.Name,
+                NominatedByName = nomination.NominatedBy.Name,
                 Status = nomination.Status.ToString(),
                 CreatedAt = nomination.CreatedAt
             };

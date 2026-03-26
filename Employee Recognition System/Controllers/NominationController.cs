@@ -18,8 +18,12 @@ namespace Employee_Recognition_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateNominationDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var result = await _service.Create(dto);
-            return Created("", result);
+
+            return CreatedAtAction(nameof(GetAll), new { id = result.Id }, result);
         }
 
         [HttpGet]
@@ -32,6 +36,9 @@ namespace Employee_Recognition_System.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, UpdateNominationStatusDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var result = await _service.UpdateStatus(id, dto);
             return Ok(result);
         }

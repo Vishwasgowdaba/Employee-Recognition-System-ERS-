@@ -110,6 +110,30 @@
         }
       }
     },
+    "/api/Dashboard/leaderboard": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/recent-activity": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Employee": {
       "get": {
         "tags": [
@@ -285,17 +309,19 @@
         "additionalProperties": false
       },
       "CreateAwardCategoryDTO": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
           },
           "points": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
@@ -364,6 +390,9 @@
     },
     {
       "name": "Award"
+    },
+    {
+      "name": "Dashboard"
     },
     {
       "name": "Employee"

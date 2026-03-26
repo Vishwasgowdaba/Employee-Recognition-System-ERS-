@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UJ3tB9E0JAY=",
+  "dgSpecHash": "1vdrE1l5kzw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\00325097\\OneDrive - Nexer AB\\Desktop\\Employee Recognition System\\Employee Recognition System\\Employee_Recognition_System.csproj",
+  "projectFilePath": "C:\\Users\\00325097\\OneDrive - Nexer AB\\Desktop\\New folder\\Employee-Recognition-System-ERS-\\Employee Recognition System\\Employee_Recognition_System.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\00325097\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\00325097\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
