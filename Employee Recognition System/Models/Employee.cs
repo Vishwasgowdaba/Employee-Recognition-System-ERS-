@@ -11,6 +11,8 @@ namespace Employee_Recognition_System.Models
         [Required]
         [StringLength(100)] 
         public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public string Role { get; set; }
         public int Points { get; set; }
     }
 }
