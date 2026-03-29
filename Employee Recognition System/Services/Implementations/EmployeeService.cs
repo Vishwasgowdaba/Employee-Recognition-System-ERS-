@@ -46,13 +46,14 @@ namespace Employee_Recognition_System.Services.Implementations
 
         public async Task<EmployeeResponseDTO> Create(CreateEmployeeDTO dto)
         {
-            var employee = new Employee
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                Id=dto.employeeId,
-                Points = 0
-            };
+           var employee = new Employee
+{
+    Name = dto.Name,
+    Email = dto.Email,
+    Points = dto.Points,
+    PasswordHash = dto.PasswordHash,
+    Role = dto.Role
+};
 
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();

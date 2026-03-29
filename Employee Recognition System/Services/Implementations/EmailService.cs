@@ -39,7 +39,7 @@ namespace Employee_Recognition_System.Services.Implementations
 
             mailMessage.To.Add(toEmail);
 
-            await client.SendMailAsync(mailMessage);
+           // await client.SendMailAsync(mailMessage);
         }
     }
 }

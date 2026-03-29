@@ -48,7 +48,8 @@ namespace Employee_Recognition_System.Services.Implementations
             {
                 Token = token,
                 Role = user.Role,
-                Name = user.Name
+                Name = user.Name,
+                UserId = user.Id
             };
         }
 
@@ -67,7 +68,8 @@ namespace Employee_Recognition_System.Services.Implementations
             {
                 Token = token,
                 Role = user.Role,
-                Name = user.Name
+                Name = user.Name,
+                UserId = user.Id
             };
         }
 
@@ -83,8 +85,8 @@ namespace Employee_Recognition_System.Services.Implementations
             };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"])
-            );
+            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
+         );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

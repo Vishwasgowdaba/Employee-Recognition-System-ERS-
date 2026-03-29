@@ -74,22 +74,22 @@ namespace Employee_Recognition_System.Services.Implementations
         }
 
         public async Task<List<AppreciationResponseDTO>> GetAll()
+{
+    return await _context.Appreciations
+        .Include(a => a.Sender)     // ✅ fetch sender
+        .Include(a => a.Receiver)   // ✅ fetch receiver
+        .OrderByDescending(a => a.CreatedAt)
+        .Select(a => new AppreciationResponseDTO
         {
-            return await _context.Appreciations
-                
-                
-                .OrderByDescending(a => a.CreatedAt)
-                .Select(a => new AppreciationResponseDTO
-                {
-                    Id = a.Id,
-                    SenderId = a.SenderId,
-                    
-                    ReceiverId = a.ReceiverId,
-                    
-                    Message = a.Message,
-                    CreatedAt = a.CreatedAt
-                })
-                .ToListAsync();
-        }
+            Id = a.Id,
+            SenderId = a.SenderId,
+            SenderName = a.Sender.Name,       // ✅ add this
+            ReceiverId = a.ReceiverId,
+            ReceiverName = a.Receiver.Name,   // ✅ add this
+            Message = a.Message,
+            CreatedAt = a.CreatedAt
+        })
+        .ToListAsync();
+}
     }
 }
