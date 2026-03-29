@@ -1,8 +1,8 @@
 body {
-  margin:0;
+  margin: 0;
   font-family: Inter;
-  background:#f1f5f9;
-  font-size: 18px;
+  background: #0f0f0f; /* ✅ DARK */
+  color: white;
 }
 
 /* Center layout */
@@ -50,25 +50,19 @@ h3 {
 }
 
 .nav-tabs button {
-  padding:10px 15px;
-  font-size: 16px;
-  border:none;
-  border-radius:8px;
-  background:#e2e8f0;
+  background: #2c2c2c;
+  color: white;
 }
 
 .nav-tabs .active {
-  background:#6366f1;
-  color:white;
+  background: white;
+  color: black;
 }
 
 /* Cards */
 .card {
-  background:white;
-  padding:30px;
-  border-radius:14px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  font-size: 16px;
+  background: rgba(255,255,255,0.08); /* ✅ glass effect */
+  color: white;
 }
 .row {
   font-size: 18px;
@@ -103,9 +97,9 @@ label {
 
 /* Inputs */
 input {
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ddd;
+  background: #1c1c1c;
+  color: white;
+  border: 1px solid #444;
 }
 input, select {
   font-size: 16px;   /* ⭐ bigger text */
@@ -132,16 +126,14 @@ button {
   font-weight:600;
 }
 
-/* Auth page */
-.auth-container {
+/* Auth page 
+ .auth-container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f1f5f9;
 }
-
-/* Card */
 .auth-card {
   width: 360px;
   background: white;
@@ -153,7 +145,7 @@ button {
   gap: 15px;
 }
 
-/* Title */
+/* Title *
 .auth-card h2 {
   text-align: center;
   margin: 0;
@@ -165,7 +157,7 @@ button {
   color: #777;
 }
 
-/* Inputs */
+/* Inputs 
 .auth-card input {
   padding: 12px;
   border-radius: 8px;
@@ -177,7 +169,7 @@ button {
   border-color: #6366f1;
 }
 
-/* Options row */
+/* Options row 
 .auth-options {
   display: flex;
   justify-content: space-between;
@@ -185,7 +177,7 @@ button {
   color: #555;
 }
 
-/* Button */
+/* Button
 .auth-btn {
   padding: 12px;
   background: #6366f1;
@@ -197,7 +189,7 @@ button {
 
 .auth-btn:hover {
   background: #4f46e5;
-}
+} */
 
 /* Links */
 .link {

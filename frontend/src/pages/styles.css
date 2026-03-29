@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Container */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.auth-card {
+  width: 550px;
+  height: auto;
+  padding: 40px;
+  border-radius: 15px;
+
+  background: linear-gradient(to bottom, #a8a7a7, #2a2a2a);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+
+  text-align: center;
+  color: white;
+}
+
+.auth-card:hover {
+  transition: 0.3s;
+  transform: scale(1.02);
+  box-shadow: 0 0 50px rgb(137, 136, 136);
+ 
+}
+
+/* Heading */
+.auth-card h2 {
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+.auth-card input::placeholder {
+  color: #666;
+}
+
+/* Options row */
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  min-width: 250px;
+}
+
+
+
+/* Link */
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.link:hover {
+  opacity: 1;
+}
+
+/* Button */
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+
+  background: white;
+  color: black;
+
+  border: none;
+  border-radius: 6px;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.auth-btn:hover {
+  background: #ddd;
+  transform: scale(1.03);
+}
+
+.auth-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  white-space: nowrap; 
+}
+
+.auth-options input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Bottom text */
+.bottom-text {
+  margin-top: 15px;
+  font-size: 13px;
+}
+

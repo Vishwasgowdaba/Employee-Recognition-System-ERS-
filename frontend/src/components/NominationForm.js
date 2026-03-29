@@ -1,45 +1,113 @@
-import { useState } from "react";
-import axios from "../utils/axiosInstance";
+import { useState, useEffect } from "react";
+import API from "../services/api";
 
-export default function NominationForm() {
+export default function NominationForm({refreshData}) {
+  const [categories, setCategories] = useState([]);
+  const managerId = localStorage.getItem("userId");
+  const [employees, setEmployees] = useState([]);
   const [form, setForm] = useState({
-    senderId: "",
-    receiverId: "",
-    category: "",
+    employeeId: "",
+    awardCategoryId: ""
   });
+  useEffect(() => {
+  fetchEmployees();
+  fetchCategories();
+}, []);
+
+const fetchEmployees = async () => {
+  try {
+    const res = await API.get("/Employee");
+    setEmployees(res.data.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchCategories = async () => {
+  try {
+    const res = await API.get("/Award");  // or your endpoint
+     console.log("CATEGORIES:", res.data);
+     setCategories(res.data.data || res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    await axios.post("/nomination", form);
-    alert("✅ Nomination sent (Email triggered)");
+  const payload = {
+    nominatedById: Number(localStorage.getItem("userId")),
+    employeeId: Number(form.employeeId),
+    awardCategoryId: Number(form.awardCategoryId)
   };
 
+  console.log("PAYLOAD:", payload); // 🔥 ADD THIS
+
+  try {
+    await API.post("/Nomination", payload);
+
+    alert("✅ Nomination submitted successfully");
+    refreshData();
+   
+
+    setForm({
+      employeeId: "",
+      awardCategoryId: ""
+    });
+
+  } catch (err) {
+  const message = err.response?.data;
+
+  if (message?.includes("Already nominated")) {
+    alert("⚠️ This employee is already nominated!");
+  } else {
+    alert("Error submitting nomination");
+  }
+
+  console.log(err.response);
+}
+};
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>🏆 Nominate Employee</h3>
+    <form className="form-ui" onSubmit={handleSubmit}>
+      
+      
 
-      <input
-        placeholder="Your ID"
-        onChange={(e) => setForm({ ...form, senderId: e.target.value })}
-      />
-
-      <input
-        placeholder="Employee ID"
-        onChange={(e) => setForm({ ...form, receiverId: e.target.value })}
-      />
-
-      {/* ⭐ CATEGORY DROPDOWN */}
       <select
-        onChange={(e) => setForm({ ...form, category: e.target.value })}
-      >
-        <option value="">Select Award</option>
-        <option>Star of the Month</option>
-        <option>Employee of the Month</option>
-        <option>Employee of the Year</option>
-      </select>
+  value={form.employeeId}
+  onChange={(e) =>
+    setForm({ ...form, employeeId: e.target.value })
+  }
+>
+  <option value="">Select Employee</option>
 
-      <button type="submit">Nominate</button>
+  {employees
+    .filter((emp) => emp.employeeId != managerId)
+    .map((emp) => (
+      <option key={emp.employeeId} value={emp.employeeId}>
+        {emp.name}
+      </option>
+  ))}
+</select>
+
+      <select
+  value={form.awardCategoryId}
+  onChange={(e) =>
+    setForm({ ...form, awardCategoryId: e.target.value })
+  }
+>
+  <option value="">Select Category</option>
+
+  {categories.map((cat) => (
+    <option key={cat.id} value={cat.id}>
+  {cat.name} ({cat.points} pts)
+</option>
+  ))}
+
+</select>
+
+      <button type="submit">Submit Nomination</button>
     </form>
   );
 }

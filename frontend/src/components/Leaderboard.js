@@ -1,34 +1,57 @@
+import { useEffect, useState } from "react";
+import API from "../services/api";
+
 export default function Leaderboard() {
-  const data = [
-    { name: "Alice", points: 120 },
-    { name: "Bob", points: 100 },
-    { name: "John", points: 90 },
-  ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
+
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await API.get("/Dashboard/leaderboard");
+      setData(res.data?.data || []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getMedal = (index) => {
+  if (index === 0) return "🥇";
+  if (index === 1) return "🥈";
+  if (index === 2) return "🥉";
+  return "🏅";
+};
 
   return (
-    <div>
-      <h3>🏅 Leaderboard</h3>
+    <div className="leaderboard-container">
+      
 
-      <div style={{ marginTop: "10px" }}>
-        {data.map((user, i) => (
+      {data.length === 0 ? (
+        <p>No leaderboard data</p>
+      ) : (
+        data.map((item, index) => (
           <div
-            key={i}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "10px 10px",
-              borderBottom: "5px solid #eee",
-              fontSize: "20px",
-              marginBottom: "10px",
-            }}
+            key={index}
+            className={`leaderboard-row ${
+              index === 0 ? "gold" :
+              index === 1 ? "silver" :
+              index === 2 ? "bronze" : ""
+            }`}
           >
-            <span>{i + 1}. {user.name}</span>
-            <span style={{ color: "#6366f1", fontWeight: "600" }}>
-              {user.points} pts
-            </span>
+            {/* LEFT */}
+            <div className="left">
+              <span className="rank">#{index + 1}</span>
+              <span className="name">{item.name}</span>
+            </div>
+
+            {/* RIGHT */}
+            <div className="right">
+              <span className="points">{item.points} pts</span>
+            </div>
           </div>
-        ))}
-      </div>
+        ))
+      )}
     </div>
   );
 }

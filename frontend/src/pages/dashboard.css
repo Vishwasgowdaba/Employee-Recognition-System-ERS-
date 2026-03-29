@@ -1,0 +1,506 @@
+/* MAIN BACKGROUND */
+.dashboard-container {
+  min-height: 100vh;
+  padding: 20px;
+
+  background: linear-gradient(to bottom, #111, #000);
+  color: white;
+}
+
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.logout-btn {
+  padding: 8px 16px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* NAVIGATION */
+/* NAVIGATION - PREMIUM STYLE */
+.nav-tabs {
+  margin: 20px 0;
+  display: flex;
+  gap: 25px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* buttons */
+.nav-tabs button {
+  position: relative;
+  padding: 10px 5px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* hover */
+.nav-tabs button:hover {
+  color: white;
+}
+
+/* underline effect */
+.nav-tabs button::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+
+/* active tab */
+.nav-tabs button.active {
+  color: white;
+  font-weight: 600;
+}
+
+/* animate underline */
+.nav-tabs button.active::after {
+  width: 100%;
+}
+/* GRID */
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+/* CARD */
+.card {
+  padding: 20px;
+  border-radius: 12px;
+  background: #1e1e2f;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px rgba(150, 150, 150, 0.6);
+}
+/* STAT */
+.stat {
+  text-align: center;
+}
+
+/* BIG CARD */
+.big {
+  margin-top: 20px;
+}
+
+/* LIGHT MODE INPUTS */
+.dashboard-container.light input,
+.dashboard-container.light select,
+.dashboard-container.light textarea {
+  background: #ffffff;           /* clean white */
+  color: #111827;                /* dark text */
+  border: 1px solid #d1d5db;     /* soft border */
+  border-radius: 6px;
+  padding: 10px;
+}
+
+/* placeholder */
+.dashboard-container.light input::placeholder,
+.dashboard-container.light textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* focus effect */
+.dashboard-container.light input:focus,
+.dashboard-container.light select:focus,
+.dashboard-container.light textarea:focus {
+  outline: none;
+  border-color: #6366f1; /* purple highlight */
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* CENTER CONTENT */
+.center-card {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+/* form section */
+.form-card {
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+
+/* leaderboard */
+.leaderboard-section {
+  margin-top: 30px;
+}
+
+/* smooth spacing */
+.nav-tabs {
+  margin-bottom: 20px;
+}
+/* DARK MODE */
+.dashboard-container.dark {
+  background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+  color: white;
+}
+
+/* LIGHT MODE */
+.dashboard-container.light {
+  background: linear-gradient(to right, #f6f4f4, #f4f1f1);
+  color: black;
+}
+
+/* cards */
+.dashboard-container.light .card {
+  background: white;
+  color: black;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.dashboard-container.dark .card {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+/* nav */
+.dashboard-container.light .nav-tabs button {
+  background: #e2e8f0;
+  color: black;
+}
+
+.dashboard-container.dark .nav-tabs button {
+  background: #2c2c2c;
+  color: white;
+}
+/* register input */
+.auth-input {
+  width: auto;
+  padding: 10px;
+  background: #111;
+  color: rgb(253, 250, 250);
+
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+input::placeholder {
+  color: #f9f8f8;
+}
+
+/* recognition history */
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 10px;
+  font-size: 16px;
+
+  padding: 15px 0;
+ 
+}
+
+.left {
+  font-weight: 500;
+}
+
+.right {
+  color: #ccc;
+  font-size: 14px;
+  max-width: 40%;
+  text-align: right;
+}
+
+.status {
+  margin-right: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* COLORS */
+.status.approved {
+  margin: 0 10px;
+  padding: 4px 8px;
+  background: #1f8b4c;
+  color: white;
+}
+
+.status.rejected {
+   margin: 0 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  background: #b91c1c;
+  color: white;
+}
+
+.status.pending {
+   margin: 0 10px;
+  padding: 4px 8px;
+  background: #d97706;
+  color: white;
+}
+
+.dashboard-container {
+  padding: 20px;
+  min-height: 100vh;
+}
+/* LIGHT MODE - HISTORY CARD */
+.dashboard-container.light .form-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb; /* subtle border */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.dashboard-container.light .history-item .left {
+  color: #111827; /* dark text */
+  font-weight: 500;
+}
+
+.dashboard-container.light .history-item .right {
+  color: #4b5563; /* medium gray */
+}
+.dashboard-container.light .history-item:hover {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding-left: 5px;
+}
+.dashboard-container.light h2 {
+  color: #111827;
+}
+.dashboard-container.light .form-card {
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+}
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.05);
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+/* ===============================
+   📜 HISTORY + COUNT SIDE BY SIDE
+================================ */
+.history-section {
+  display: grid;
+
+  gap: 20px;
+  margin-top: 20px;
+  align-items: stretch; /* ✅ IMPORTANT */
+}
+
+/* make history scrollable instead of stretching */
+.history-card {
+  max-height: 370px;
+  overflow-y: auto;
+  padding-right: 10px;
+    scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+.history-section .card {
+  min-height: 30px;/* ✅ both cards equal height */
+}
+
+/* smaller stat card */
+.small-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* ✅ align top */
+  align-items: center;
+  padding-top: 20px;
+   /* adjust if needed */
+}
+.small-card h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* SCROLLBAR - CHROME, EDGE */
+.history-card::-webkit-scrollbar {
+  width: 4px; /* 🔥 thin */
+}
+
+.history-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.history-card::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+.history-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+
+
+.role {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  height: 100%;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* CARD */
+.card {
+  padding: 20px;
+  border-radius: 12px;
+  background: #1e1e2f;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(125, 123, 123, 0.3);
+}
+
+.light .card {
+  background: #fdfafa;
+}
+
+/* STAT */
+.stat h3 {
+  font-size: 28px;
+}
+
+.rank {
+  color: #f3a807;
+}
+
+/* BUTTON */
+button {
+  cursor: pointer;
+  
+}
+
+/* ANIMATION */
+.slide-in {
+  animation: slideIn 0.8s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .grid,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* container */
+.leaderboard-container {
+  margin-top: 10px;
+}
+
+/* title */
+.leaderboard-title {
+  margin-bottom: 15px;
+}
+
+/* row */
+.leaderboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.05);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+/* hover effect */
+.leaderboard-row:hover {
+  transform: scale(1.02);
+  background: #acacb8;
+}
+
+/* left side */
+.left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* rank */
+.rank {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* name */
+.name {
+  font-size: 15px;
+}
+
+/* points */
+
+
+/* TOP 3 COLORS */
+.gold {
+  background: linear-gradient(90deg, #ffd70033, transparent);
+}
+
+.silver {
+  background: linear-gradient(90deg, #c0c0c033, transparent);
+}
+
+.bronze {
+  background: linear-gradient(90deg, #cd7f3233, transparent);
+}

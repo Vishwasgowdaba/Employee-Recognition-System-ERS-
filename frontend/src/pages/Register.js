@@ -1,34 +1,113 @@
-import { useState } from "react";
-import { register } from "../services/authService";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../services/api";
+import { AuthContext } from "../context/AuthContext";
+import "./styles.css";
+import logo from "../assets/nexerlogo.png";
+import bg from "../assets/nexerbg.png";
 
-export default function Register() {
+function Register() {
+  const navigate = useNavigate();
+  const { loginUser } = useContext(AuthContext);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
+    role: ""
   });
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await register(form);
-      alert("Registered!");
-      navigate("/");
-    } catch {
-      alert("Error");
+      const res = await API.post("/Auth/register", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: form.role,
+      });
+
+      console.log("REGISTER RESPONSE:", res.data);
+
+      // ✅ Auto login
+      loginUser({
+        token: res.data.token,
+        name: res.data.name,
+        userId: res.data.userId,
+        role: res.data.role,
+      });
+
+      alert("✅ Registered & Logged in!");
+
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      alert("❌ Registration failed");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input placeholder="Name" onChange={(e) => setForm({ ...form, name: e.target.value })} />
-      <input placeholder="Email" onChange={(e) => setForm({ ...form, email: e.target.value })} />
-      <input type="password" placeholder="Password" onChange={(e) => setForm({ ...form, password: e.target.value })} />
-      <button type="submit">Register</button>
-    </form>
+    <div
+      className="auth-container"
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <img src={logo} alt="logo" className="logo" />
+
+        <h2>Create Account</h2>
+
+        <input
+          type="text"
+          placeholder="Full Name"
+          onChange={(e) =>
+            setForm({ ...form, name: e.target.value })
+          }
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) =>
+            setForm({ ...form, password: e.target.value })
+          }
+        />
+        <select
+  onChange={(e) =>
+    setForm({ ...form, role: e.target.value })
+  }
+  className="auth-input"
+>
+  <option value="">Select Role</option>
+  <option value="Employee">Employee</option>
+  <option value="Manager">Manager</option>
+</select>
+
+        <button type="submit" className="auth-btn">
+          Register
+        </button>
+
+        <p className="bottom-text">
+          Already have an account?{" "}
+          <span onClick={() => navigate("/")} className="link">
+            Sign In
+          </span>
+        </p>
+      </form>
+    </div>
   );
 }
+
+export default Register;
